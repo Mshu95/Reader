@@ -1,0 +1,102 @@
+  body {
+            background-color: #f5f5f5;
+        }
+
+        .content {
+            width: 60%;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #ffffff;
+            padding: 50px 0px;
+        }
+
+        .style_btn {
+            color: white;
+            height: 50px;
+            width: 200px;
+            outline: none;
+            border: 0px;
+            margin: 0px 2px;
+            font-size: 16px;
+            letter-spacing: 5px;
+        }
+
+        .style_one {
+            background-color: #72c4f4;
+        }
+
+        .style_two {
+            background-color: #88ddf9;
+        }
+
+        .article_content {
+            text-align: left;
+            margin: 50px;
+            overflow: auto;
+        }
+
+        .font_letter {
+            margin: 0px 5px;
+            font-size: 14px;
+            cursor: pointer;
+            float:left;
+        }
+        .result_{
+            text-align: left;
+            overflow: auto;
+            margin: 50px;
+        }
+        .table_clone{
+            display: inline;
+            text-align: center;
+        }
+        .time_{
+            color: #72c4f4;
+        }
+        .line_black{
+            width: 90%;
+            text-align: center;
+            margin: 20px auto;
+            border: 1px solid #f0f0f0;
+        }
+        .font_gray{
+            color: #9b9b9b;
+        }
+        .table_count{
+            width: 100%;
+        }
+        .svg_span{
+            color: #f6a614;
+        }
+        .svg_span2{
+            color: #94e899;
+        }
+        .svg_span3{
+            color: #72c4f4;
+        }
+        .question_div{
+            margin: 35px;
+            
+        }
+        .radio_st{
+            margin-left: 50px;
+        }
+        .option_{
+            text-align: left;
+            width: 40%;
+            margin: 10px auto;
+        }
+        .text_div{
+            color: #9b9b9b;
+            overflow: auto;
+        }
+        .error_color{
+            color: red;
+        }    
+        .bottom_div{
+            margin: 20px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #72c4f4;
+            letter-spacing: 5px;
+        }    

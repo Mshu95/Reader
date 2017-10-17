@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reader</title>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" charset="utf-8" href="css/read.css"></link>
+    <link rel="shortcut icon" href="img/read.png" type="image/x-icon" />
+</head>
+
+<body>
+    <div class="content">
+        <button class="style_btn style_one">第一种阅读模式</button><button class="style_btn style_two">第一种阅读模式</button>
+        <div class="article_content"></div>
+        <div class="line_black start_text_action"></div>
+        <div class="result_count read_over start_text_action">
+            <table class="table_count">
+                <tbody>
+                    <tr>
+                        <td class="font_gray svg_time">此题平均用时：</td>
+                        <td class="font_gray one_time">完成此题用时：</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="result_  start_text_action"></div>
+        <div class="read_over">
+            <div class="line_black"></div>
+            <button class="style_btn style_one start_text">开始测试</button><button class="style_btn style_two submit_text">提交答案</button>
+        </div>
+        <div class="text_div"></div>
+        <div class="text_over">
+            <div class="line_black"></div>
+            <div class="result_count  ">
+                <table class="table_count">
+                    <tbody>
+                        <tr>
+                            <td class="font_gray result_text">测试结果：</td>
+                            <td class="font_gray correct_c">此题的正确率：</td>
+                            <td class="font_gray over_time">完成测试用时：</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bottom_div">
+                <img src="img/book.png" >
+                <br>
+                 <br>
+                 学无止境 尚需前行
+            </div>
+        </div>
+    </div>
+    <!-- 克隆 -->
+    <div class="clone_div">
+        <table class="table_clone">
+            <tbody>
+                <tr>
+                    <td class="font_"></td>
+                </tr>
+                <tr>
+                    <td class="time_"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var type_ = 1; //阅读模式
+        var index_ = 0; //浏览进度
+        var isOver = 0; //是否浏览完毕 1：是
+        var isFirst = 1; //是否是第一次 0：不是 
+        var timeArray = new Array(); //模式1的时间存储数组\
+        var startDate;  //当前的词的开始时间
+        var stopDate;   //当前的词的结束时间
+        var content_html = "";  //克隆载体
+        var contentArray; //词数组
+        var type_q = 1;  //问题类型 2:是否型 1：abcd型
+        var isStartText = 0 //是否开始测试 1：是
+        var isCorrect = 0; //测试是否正确 1：是
+        var isSubmit = 0; //是否提交答案 1:是
+        var start_text;  //开始测试时间
+        var stop_text;  //结束测试时间
+
+        var content = "真好， 朋友 送 我 一对 珍珠鸟， 圆圆 的 脑瓜子， 小小 的 眼珠子 真 他妈的 可爱至极，我 真想 一拳头 砸的 血肉模糊";
+        var question = "我很吗？";
+        var correct_option = "是";
+        var error1 = " ";
+        var error2 = "有点很";
+        var error3 = "太狠了！";
+        $(".read_over").hide()
+        $(".text_over").hide()
+
+        $(function () {
+            content = content.trim();
+            contentArray = content.split(" ")
+            for (i in contentArray) {
+                var l = contentArray[i].length
+                var line = "";
+                for (var y = 0; y < l; y++) {
+                    line = line + "—";
+                }
+                content_html += "<span class='font_letter' ct = " + contentArray[i] + " >" + line + "</span>"
+            }
+            $(".article_content").html(content_html)
+            //开始测试
+            $(".start_text").click(function () {
+
+                if (isStartText == 0) {
+                    start_text = new Date().getTime();
+                    $(".start_text_action").hide()
+                    $(".text_div").append(" <div class='question_div'>" + question + "</div>" + getOption())
+                    isStartText = 1;
+                }
+            })
+            //提交答案
+            $(".submit_text").click(function () {
+
+                if (isSubmit == 0) {
+                    stop_text = new Date().getTime();
+                    var userAnser;
+                    if (type_q == 1) {
+                        userAnser = getRadio("abcd");
+                    } else {
+                        userAnser = getRadio("no_yes");
+                    }
+                    if (userAnser == correct_option) {
+                        isCorrect = 1;
+                    }
+                    if (isCorrect == 0) {
+                        $(".result_text").append("<span class='error_color'> 错误 </span>")
+                        $(".correct_c").append("<span class='svg_span3'> 0 % </span>")
+                    } else {
+                        $(".result_text").append("<span class='svg_span2'> 正确 </span>")
+                        $(".correct_c").append("<span class='svg_span3'> 100 % </span>")
+                    }
+                    $(".over_time").append("<span class='svg_span'>" + formatTime(stop_text - start_text, 2) + "</span>")
+                    $(".text_over").show()
+                    $(".start_text_action").show()
+                    isSubmit = 1;
+                } else {
+                    alert("已经提交过了")
+                }
+
+            })
+        })
+        function getOption() {
+            if ("" == error1.trim() || "" == error2.trim() || "" == error3.trim()) {
+                type_q = 2;
+                return "<div class='option_yn'> <input type='radio' name='no_yes' value='是' >是<input type='radio' class='radio_st' name='no_yes' value='否' >否</div>";
+            } else {
+                var optionArray = new Array();
+                optionArray.push(correct_option)
+                optionArray.push(error1)
+                optionArray.push(error2)
+                optionArray.push(error3)
+                optionArray.sort(function () {
+                    return 0.5 - Math.random()
+                })
+                var abdc = "<div class='option_'>";
+                for (i in optionArray) {
+                    abdc += "<input type='checkbox' class='checkbox_st' value=" + optionArray[i] + " name='abcd'>" + optionArray[i] + "<br>";
+                }
+                abdc = abdc + "</div>"
+                return abdc;
+            }
+        }
+        function changeLetter(letter) {
+            var letter_ = letter.attr("ct")
+            var text_ = letter.text()
+            letter.text(letter_)
+            letter.attr("ct", text_)
+        }
+        $(document).on("click", ":checkbox[name=abcd]", function () {
+            if ($(this).prop('checked')) {
+                $(':checkbox[name=abcd]').prop("checked", false);
+                $(this).prop("checked", true);
+            }
+        })
+        $(document).on("mousedown", ".font_letter", function () {
+            type_1_change($(this))
+        })
+        $(document).on("mouseup", ".font_letter", function () {
+            type_1_change($(this))
+        })
+        $(document).keyup(function (event) {
+            var keyNum = event.which;   //获取键值
+            if (keyNum == 39) {
+                if (isOver == 0) {
+                    isFirst = 0;
+                    startDate = new Date().getTime();
+                    $(".font_letter").each(function (index, item) {
+                        if (index_ == index) {
+                            changeLetter($(this));
+                            changeLetter($(this).prev());
+                        }
+                    })
+                    if (index_ == $(".font_letter").length) {  //结束
+                        changeLetter($(".font_letter:last"))
+                        isOver = 1;
+                        var clone_body = $(".clone_div").clone();
+                        var html_content = "";
+                        for (i in timeArray) {
+                            clone_body.find(".font_").text(contentArray[i]);
+                            clone_body.find(".time_").text(formatTime(timeArray[i]), 1);
+                            html_content += clone_body.html();
+                        }
+                        $(".svg_time").append("<span class='svg_span'>" + sumTime(timeArray) + "</span>")
+                        $(".one_time").append("<span class='svg_span2'>" + sumTime(timeArray) + "</span>")
+                        $(".result_").html(html_content)
+                        $(".read_over").show();
+                    }
+                    index_++;
+                }
+            }
+        })
+        $(document).keydown(function (event) {
+            var keyNum = event.which;   //获取键值
+            if (keyNum == 39) {
+                if (isFirst == 0 && isOver == 0) {
+                    stopDate = new Date().getTime();
+                    timeArray.push(stopDate - startDate)
+                }
+
+            }
+        })
+        function type_1_change(letter) {
+            if (type_ == 1) {
+                changeLetter(letter)
+            }
+        }
+        function formatTime(time, type) {
+            //计算出小时数
+            var leave1 = time % (24 * 3600 * 1000)    //计算天数后剩余的毫秒数
+            //计算相差分钟数
+            var leave2 = leave1 % (3600 * 1000)        //计算小时数后剩余的毫秒数
+            var minutes = Math.floor(leave2 / (60 * 1000))
+            if (type == 1) {
+                if (minutes > 15) {
+                    minutes = '>' + 15
+                }
+            }
+            //计算相差秒数
+            var leave3 = leave2 % (60 * 1000)      //计算分钟数后剩余的毫秒数
+            var seconds = (leave3 / 1000).toFixed(1)
+            if (minutes == 0) {
+                return seconds + 's'
+            }
+            return minutes + 'm' + seconds + 's';
+
+        }
+        function sumTime(timeArray) {
+            var sum = 0;
+            for (i in timeArray) {
+                sum += timeArray[i];
+            }
+            return formatTime(sum, 2);
+        }
+        function getRadio(name) {
+            var radio = document.getElementsByName(name)
+            for (var i = 0; i < radio.length; i++) {
+                if (radio[i].checked) {
+                    return radio[i].value
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
